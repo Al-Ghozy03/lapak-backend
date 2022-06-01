@@ -1,0 +1,57 @@
+const { default: jwtDecode } = require("jwt-decode");
+const { QueryTypes } = require("sequelize");
+const { sequelize } = require("../models");
+
+const ordermodel = require("../models").orders;
+const usermodel = require("../models").users;
+const barangmodel = require("../models").barangs;
+
+async function barangSampai(req, res) {
+  try {
+    const data = await ordermodel.findOne({ where: { id: req.params.id } });
+    if (!data) return res.status(404).json({ message: "data tidak ditemukan" });
+    await ordermodel.update({ isPaid: true }, { where: { id: req.params.id } });
+    return res.status(200).json({ message: "berhasil" });
+  } catch (er) {
+    console.log(er);
+    return res.status(442).json({ er });
+  }
+}
+
+async function getOrder(req, res) {
+  try {
+    const data = await sequelize.query(
+      `select orders.id,orders.user_id,orders.barang_id,barangs.store_id,orders.total_barang,orders.total_harga,orders.ongkir,orders.alamat,orders.isPaid,barangs.nama_barang,barangs.harga,barangs.daerah,barangs.deskripsi,barangs.kategori,barangs.diskon,barangs.berat_barang,barangs.foto_barang,stores.owner,stores.nama_toko,stores.photo_profile as foto_toko from orders join users on users.id = orders.user_id join barangs on orders.barang_id = barangs.id join stores on stores.id = barangs.store_id where users.id = ${
+        jwtDecode(req.headers.authorization).id
+      } and orders.isPaid = 0`,
+      {
+        type: QueryTypes.SELECT,
+        raw: true,
+      }
+    );
+    if (!data) return res.status(404).json({ message: "data tidak ditemukan" });
+    res.status(200).json({ data });
+  } catch (er) {
+    console.log(er);
+    return res.status(442).json({ er });
+  }
+}
+
+async function pesan(req, res) {
+  try {
+    let body = req.body;
+    ordermodel.create({
+      user_id: jwtDecode(req.headers.authorization).id,
+      barang_id: body.barang_id,
+      total_barang: body.total_barang,
+      total_harga: body.total_harga,
+      ongkir: body.ongkir,
+      alamat: body.alamat,
+    });
+    res.json({ message: "berhasil" });
+  } catch (er) {
+    console.log(er);
+    return res.status(442).json({ er });
+  }
+}
+module.exports = { pesan, getOrder, barangSampai };
