@@ -35,7 +35,7 @@ async function deleteBarang(req, res) {
 async function getRandom(req, res) {
   try {
     const data = await sequelize.query(
-      `select barangs.id,barangs.store_id,stores.owner,stores.nama_toko,stores.daerah,stores.photo_profile as foto_toko,barangs.nama_barang,barangs.harga,barangs.deskripsi,barangs.kategori,barangs.foto_barang,barangs.diskon from stores join barangs on stores.id = barangs.store_id order by RAND() limit 5`,
+      `select barangs.id,barangs.store_id,stores.owner,stores.nama_toko,stores.daerah,stores.photo_profile as foto_toko,barangs.nama_barang,barangs.harga,barangs.deskripsi,barangs.kategori,barangs.foto_barang,barangs.diskon from stores join barangs on stores.id = barangs.store_id order by RANDOM() limit 5`,
       {
         type: QueryTypes.SELECT,
         raw: true,
