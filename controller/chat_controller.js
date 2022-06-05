@@ -6,6 +6,14 @@ const chatmodel = require("../models").room_chats;
 const messagemodel = require("../models").messages;
 const listchatmodel = require("../models").list_chats;
 
+async function seeMessage(data) {
+  console.log(data.from);
+  await messagemodel.update(
+    { isRead: true },
+    { where: { isRead: false, room_code: data.room_code, to: data.from } }
+  );
+}
+
 async function listChat(req, res) {
   try {
     const data = await sequelize.query(
@@ -119,4 +127,5 @@ module.exports = {
   sendMessage,
   messageList,
   listChat,
+  seeMessage,
 };

@@ -18,7 +18,7 @@ async function deleteItem(req, res) {
 async function getItemFromCart(req, res) {
   try {
     const data = await sequelize.query(
-      `select carts.id,carts.barang_id,carts.user_id,barangs.store_id,barangs.nama_barang,barangs.harga,barangs.daerah,barangs.deskripsi,barangs.kategori,barangs.diskon,barangs.foto_barang,stores.nama_toko,stores.photo_profile as foto_toko from carts left join barangs on carts.barang_id = barangs.id left join users on carts.user_id = users.id left join stores on barangs.store_id = stores.id where users.id = ${
+      `select carts.id,carts.barang_id,carts.user_id,barangs.store_id,barangs.nama_barang,barangs.harga,stores.daerah,stores.owner,barangs.deskripsi,barangs.kategori,barangs.diskon,barangs.foto_barang,stores.nama_toko,stores.photo_profile as foto_toko from carts left join barangs on carts.barang_id = barangs.id left join users on carts.user_id = users.id left join stores on barangs.store_id = stores.id where users.id = ${
         jwtDecode(req.headers.authorization).id
       }`,
       {

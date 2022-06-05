@@ -24,9 +24,6 @@ module.exports = {
       harga: {
         type: Sequelize.INTEGER,
       },
-      daerah: {
-        type: Sequelize.STRING,
-      },
       deskripsi: {
         type: Sequelize.STRING,
       },
@@ -44,9 +41,6 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: true,
         defaultValue: null,
-      },
-      berat_barang: {
-        type: Sequelize.INTEGER,
       },
       foto_barang: {
         type: Sequelize.STRING,

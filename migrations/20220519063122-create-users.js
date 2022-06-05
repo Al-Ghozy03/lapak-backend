@@ -19,7 +19,7 @@ module.exports = {
         type: Sequelize.STRING,
       },
       phone: {
-        type: Sequelize.STRING,
+        type: Sequelize.BIGINT,
         unique: true,
       },
       alamat: {

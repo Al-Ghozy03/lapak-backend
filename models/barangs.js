@@ -20,7 +20,6 @@ module.exports = (sequelize, DataTypes) => {
       store_id: DataTypes.INTEGER,
       nama_barang: DataTypes.STRING,
       harga: DataTypes.INTEGER,
-      daerah: DataTypes.STRING,
       deskripsi: DataTypes.STRING,
       kategori: DataTypes.ENUM(
         "elektronik",
@@ -30,7 +29,6 @@ module.exports = (sequelize, DataTypes) => {
         "buku"
       ),
       diskon: DataTypes.INTEGER,
-      berat_barang: DataTypes.INTEGER,
       foto_barang: DataTypes.STRING,
     },
     {

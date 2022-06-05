@@ -41,7 +41,7 @@ async function barangSampai(req, res) {
 async function getOrder(req, res) {
   try {
     const data = await sequelize.query(
-      `select orders.id,orders.user_id,orders.barang_id,barangs.store_id,orders.total_barang,orders.total_harga,orders.ongkir,orders.alamat,orders.isPaid,barangs.nama_barang,barangs.harga,barangs.daerah,barangs.deskripsi,barangs.kategori,barangs.diskon,barangs.berat_barang,barangs.foto_barang,stores.owner,stores.nama_toko,stores.photo_profile as foto_toko from orders join users on users.id = orders.user_id join barangs on orders.barang_id = barangs.id join stores on stores.id = barangs.store_id where users.id = ${
+      `select orders.id,orders.user_id,orders.barang_id,barangs.store_id,stores.daerah,orders.total_barang,orders.total_harga,orders.alamat,orders.isPaid,barangs.nama_barang,barangs.harga,barangs.deskripsi,barangs.kategori,barangs.diskon,barangs.foto_barang,stores.owner,stores.nama_toko,stores.photo_profile as foto_toko from orders join users on users.id = orders.user_id join barangs on orders.barang_id = barangs.id join stores on stores.id = barangs.store_id where users.id = ${
         jwtDecode(req.headers.authorization).id
       } and orders.isPaid = 0`,
       {
@@ -67,7 +67,6 @@ async function pesan(req, res) {
       barang_id: body.barang_id,
       total_barang: body.total_barang,
       total_harga: body.total_harga,
-      ongkir: body.ongkir,
       alamat: body.alamat,
     });
     res.json({ message: "berhasil", data });

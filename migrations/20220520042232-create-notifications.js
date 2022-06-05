@@ -1,47 +1,51 @@
-'use strict';
+"use strict";
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('notifications', {
+    await queryInterface.createTable("notifications", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       from: {
         type: Sequelize.INTEGER,
-        onDelete:"CASCADE",
-        onUpdate:"CASCADE",
-        references:{
-          model:"users",
-          key:"id",
-          as:"from"
-        }
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+        references: {
+          model: "users",
+          key: "id",
+          as: "from",
+        },
       },
       message: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       to: {
         type: Sequelize.INTEGER,
-        onDelete:"CASCADE",
-        onUpdate:"CASCADE",
-        references:{
-          model:"users",
-          key:"id",
-          as:"to"
-        }
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+        references: {
+          model: "users",
+          key: "id",
+          as: "to",
+        },
+      },
+      isRead: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('notifications');
-  }
+    await queryInterface.dropTable("notifications");
+  },
 };

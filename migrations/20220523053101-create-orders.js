@@ -32,10 +32,7 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       total_harga: {
-        type: Sequelize.INTEGER,
-      },
-      ongkir: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.BIGINT,
       },
       alamat:{
         type:Sequelize.STRING
