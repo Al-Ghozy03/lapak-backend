@@ -8,6 +8,7 @@ const { userRouter } = require("./user_router");
 
 const router = require("express")();
 router.use("/user", userRouter);
+router.get("/", (req, res) => res.json({ message: "berhasil" }));
 router.use(jwtMiddle);
 router.use("/store", storeRouter);
 router.use("/barang", barangRouter);
