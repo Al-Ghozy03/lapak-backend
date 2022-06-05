@@ -6,6 +6,8 @@ const {
   searchBarang,
   getBarangByKategori,
   getRandom,
+  deleteBarang,
+  getBarangDiskon,
 } = require("../controller/barang_controller");
 const { upload } = require("../middleware/upload_barang");
 
@@ -18,5 +20,6 @@ router.get("/info/:id", barangInfo);
 router.get("/search", searchBarang);
 router.get("/kategori", getBarangByKategori);
 router.get("/rekomendasi", getRandom);
-
+router.delete("/delete/:id", deleteBarang);
+router.get("/diskon-30", getBarangDiskon);
 module.exports = { barangRouter: router };

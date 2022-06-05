@@ -7,7 +7,8 @@ const http = createServer(app);
 const io = new Server(http);
 const dotenv = require("dotenv").config();
 const cors = require("cors");
-const { sendNotif } = require("./controller/barang_controller");
+const { sendMessage } = require("./controller/chat_controller");
+const { sendNotif } = require("./controller/checkout_controller");
 
 app.use(cors());
 app.use(express.json());
@@ -16,10 +17,22 @@ app.use(router);
 io.on("connection", (socket) => {
   console.log(socket.id);
 
+  socket.on("join_room", (data) => {
+    socket.join("data");
+    console.log(`ada yg join ${data}`);
+  });
+
+  socket.on("send_message", (data) => {
+    socket.emit("received_message", data);
+  });
+
   socket.on("send_notif", (data) => {
-    console.log(data);
-    sendNotif(data);
-    socket.to(data.to).emit("received_notif");
+    sendNotif(data)
+    socket.emit("received_notif",data)
+  });
+
+  socket.on("received_message", (data) => {
+    console.log("diterima", data);
   });
 });
 

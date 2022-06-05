@@ -1,10 +1,30 @@
 const { default: jwtDecode } = require("jwt-decode");
 const { QueryTypes } = require("sequelize");
 const { sequelize } = require("../models");
-
 const ordermodel = require("../models").orders;
 const usermodel = require("../models").users;
-const barangmodel = require("../models").barangs;
+const notifmodel = require("../models").notifications;
+
+async function getNotif(req, res) {
+  try {
+    const data = await sequelize.query(
+      `select notif.id as notif_id,notif.from,users.name,notif.message,notif.to,notif.createdAt,users.photo_profile from notifications as notif join users on notif.from = users.id where notif.to = ${
+        jwtDecode(req.headers.authorization).id
+      }`,
+      {
+        type: QueryTypes.SELECT,
+        raw: true,
+      }
+    );
+    return res.status(200).json({ data });
+  } catch (er) {
+    return res.status(442).json({ er });
+  }
+}
+
+async function sendNotif(data) {
+  await notifmodel.create(data);
+}
 
 async function barangSampai(req, res) {
   try {
@@ -40,18 +60,20 @@ async function getOrder(req, res) {
 async function pesan(req, res) {
   try {
     let body = req.body;
-    ordermodel.create({
+    const owner = await usermodel.findOne({ where: { id: body.owner_barang } });
+    const data = await ordermodel.create({
       user_id: jwtDecode(req.headers.authorization).id,
+      owner_barang: owner.id,
       barang_id: body.barang_id,
       total_barang: body.total_barang,
       total_harga: body.total_harga,
       ongkir: body.ongkir,
       alamat: body.alamat,
     });
-    res.json({ message: "berhasil" });
+    res.json({ message: "berhasil", data });
   } catch (er) {
     console.log(er);
     return res.status(442).json({ er });
   }
 }
-module.exports = { pesan, getOrder, barangSampai };
+module.exports = { pesan, getOrder, barangSampai, sendNotif, getNotif };

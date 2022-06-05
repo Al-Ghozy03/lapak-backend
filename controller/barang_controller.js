@@ -2,8 +2,35 @@ const { Op } = require("sequelize");
 const { sequelize } = require("../models");
 const { QueryTypes } = require("sequelize");
 const barangmodel = require("../models").barangs;
-const notifmodel = require("../models").notifications;
-const storemodel = require("../models").stores;
+
+async function getBarangDiskon(req,res) {
+  try {
+    const {orderBy} = req.query
+    const data = await sequelize.query(
+      `select barangs.id,barangs.store_id,stores.owner,stores.nama_toko,stores.daerah,stores.photo_profile as foto_toko,barangs.nama_barang,barangs.harga,barangs.deskripsi,barangs.kategori,barangs.foto_barang,barangs.berat_barang,barangs.diskon from stores join barangs on stores.id = barangs.store_id where barangs.diskon = 30 order by barangs.harga ${orderBy}`,
+      {
+        type: QueryTypes.SELECT,
+        raw: true,
+      }
+    );
+    return res.json({data})
+  } catch (er) {
+    console.log(er);
+    return res.status(442).json({er})
+  }
+}
+
+async function deleteBarang(req, res) {
+  try {
+    const data = await barangmodel.findOne({ where: { id: req.params.id } });
+    if (!data) return res.status(404).json({ message: "data tidak ditemukan" });
+    await barangmodel.destroy({ where: { id: req.params.id } });
+    return res.json({ message: "berhasil menghapus data" });
+  } catch (er) {
+    console.log(er);
+    return res.status(442).json({ er });
+  }
+}
 
 async function getRandom(req, res) {
   try {
@@ -18,14 +45,6 @@ async function getRandom(req, res) {
   } catch (er) {
     console.log(er);
     return res.status(442).json({ er });
-  }
-}
-
-async function sendNotif(data) {
-  try {
-    return console.log(data);
-  } catch (er) {
-    return console.log(er);
   }
 }
 
@@ -120,8 +139,9 @@ module.exports = {
   getBarangFromStore,
   updateBarang,
   barangInfo,
-  sendNotif,
   searchBarang,
   getBarangByKategori,
   getRandom,
+  deleteBarang,
+  getBarangDiskon
 };
