@@ -80,6 +80,7 @@ async function register(req, res) {
     const checkPhone = await usermodel.findOne({where:{phone:body.phone}})
     if(checkPhone) return res.status(442).json({message:"nomer hp sudah digunakan"})
     body.password = bcrypt.hashSync(body.password, 10);
+    body.phone = parseInt(body.phone)
     const data = await usermodel.create(body);
     const token = jwt.sign({ id: data.id }, process.env.JWT_SIGN);
     res.json({ message: "berhasil", token, data });
