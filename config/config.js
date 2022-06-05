@@ -20,7 +20,7 @@ module.exports = {
     database: process.env.PRODUCTION,
     host: process.env.DB_HOST,
     dialect: process.env.DB_DIALECT,
-    dialectOption: {
+    dialectOptions: {
       ssl: {
         require: true,
         rejectUnauthorized: false,
