@@ -16,6 +16,7 @@ const storage = new CloudinaryStorage({
   params: {
     folder: "/lapak/store",
   },
+
 });
 
 const upload = multer({ storage: storage });
