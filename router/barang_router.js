@@ -9,7 +9,7 @@ const {
   deleteBarang,
   getBarangDiskon,
 } = require("../controller/barang_controller");
-const { upload } = require("../middleware/upload_barang");
+const { upload } = require("../middleware/upload");
 
 const router = require("express")();
 

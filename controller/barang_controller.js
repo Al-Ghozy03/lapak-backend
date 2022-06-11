@@ -2,10 +2,18 @@ const { Op } = require("sequelize");
 const { sequelize } = require("../models");
 const { QueryTypes } = require("sequelize");
 const barangmodel = require("../models").barangs;
+const cloudinary = require("cloudinary").v2;
+require("dotenv").config();
 
-async function getBarangDiskon(req,res) {
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.SECRET_API_KEY,
+});
+
+async function getBarangDiskon(req, res) {
   try {
-    const {orderBy} = req.query
+    const { orderBy } = req.query;
     const data = await sequelize.query(
       `select barangs.id,barangs.store_id,stores.owner,stores.nama_toko,stores.daerah,stores.photo_profile as foto_toko,barangs.nama_barang,barangs.harga,barangs.deskripsi,barangs.kategori,barangs.foto_barang,barangs.diskon from stores join barangs on stores.id = barangs.store_id where barangs.diskon = 30 order by barangs.harga ${orderBy}`,
       {
@@ -13,10 +21,10 @@ async function getBarangDiskon(req,res) {
         raw: true,
       }
     );
-    return res.json({data})
+    return res.json({ data });
   } catch (er) {
     console.log(er);
-    return res.status(442).json({er})
+    return res.status(442).json({ er });
   }
 }
 
@@ -95,14 +103,18 @@ async function barangInfo(req, res) {
 async function updateBarang(req, res) {
   try {
     let body = req.body;
-    const data = barangmodel.findOne({ where: { id: req.params.id } });
+    const { id } = req.params;
+    const data = await barangmodel.findOne({ where: { id: id } });
     if (!data) return res.status(404).json({ message: "data tidak ditemukan" });
     if (req.file?.path === undefined) {
       body.foto_barang = data.foto_barang;
     } else {
-      body.foto_barang = req.file.path;
+      const { secure_url } = await cloudinary.uploader.upload(req.file.path, {
+        folder: "/lapak/barang",
+      });
+      body.foto_barang = secure_url;
     }
-    await barangmodel.update(body, { where: { id: req.params.id } });
+    await barangmodel.update(body, { where: { id: id } });
     res.status(200).json({ message: "berhasil" });
   } catch (er) {
     console.log(er);
@@ -125,7 +137,10 @@ async function getBarangFromStore(req, res) {
 async function createBarang(req, res) {
   try {
     let body = req.body;
-    body.foto_barang = req.file?.path;
+    const { secure_url } = await cloudinary.uploader.upload(req.file.path, {
+      folder: "/lapak/barang",
+    });
+    body.foto_barang = secure_url;
     await barangmodel.create(body);
     res.json({ message: "berhasil" });
   } catch (er) {
@@ -143,5 +158,5 @@ module.exports = {
   getBarangByKategori,
   getRandom,
   deleteBarang,
-  getBarangDiskon
+  getBarangDiskon,
 };

@@ -2,7 +2,14 @@ const jwt = require("jsonwebtoken");
 const usermodel = require("../models").users;
 const bcrypt = require("bcrypt");
 const { default: jwtDecode } = require("jwt-decode");
-const dotenv = require("dotenv").config();
+const cloudinary = require("cloudinary").v2;
+require("dotenv").config();
+
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.SECRET_API_KEY,
+});
 
 async function updateProfile(req, res) {
   try {
@@ -11,11 +18,16 @@ async function updateProfile(req, res) {
     });
     if (!data) return res.status(404).json({ message: "user tidak ditemukan" });
     let body = req.body;
+
     if (req.file?.path === undefined) {
       body.photo_profile = data.photo_profile;
     } else {
-      body.photo_profile = req.file.path;
+      const url = await cloudinary.uploader.upload(req.file.path, {
+        folder: "/lapak/user",
+      });
+      body.photo_profile = url.secure_url;
     }
+
     if (body.password != undefined) {
       body.password = bcrypt.hashSync(body.password, 10);
     } else {
@@ -75,12 +87,18 @@ async function login(req, res) {
 async function register(req, res) {
   try {
     let body = req.body;
-    const checkEmail = await usermodel.findOne({ where: { email: body.email } });
-    if(checkEmail) return res.status(442).json({message:"email sudah digunakan"})
-    const checkPhone = await usermodel.findOne({where:{phone:body.phone}})
-    if(checkPhone) return res.status(442).json({message:"nomer hp sudah digunakan"})
+    const checkEmail = await usermodel.findOne({
+      where: { email: body.email },
+    });
+    if (checkEmail)
+      return res.status(442).json({ message: "email sudah digunakan" });
+    const checkPhone = await usermodel.findOne({
+      where: { phone: body.phone },
+    });
+    if (checkPhone)
+      return res.status(442).json({ message: "nomer hp sudah digunakan" });
     body.password = bcrypt.hashSync(body.password, 10);
-    body.phone = parseInt(body.phone)
+    body.phone = parseInt(body.phone);
     const data = await usermodel.create(body);
     const token = jwt.sign({ id: data.id }, process.env.JWT_SIGN);
     res.json({ message: "berhasil", token, data });

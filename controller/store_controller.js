@@ -2,6 +2,14 @@ const { default: jwtDecode } = require("jwt-decode");
 const storemodel = require("../models").stores;
 const usermodel = require("../models").users;
 const barangmodel = require("../models").barangs;
+const cloudinary = require("cloudinary").v2;
+require("dotenv").config();
+
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.SECRET_API_KEY,
+});
 
 async function updateStore(req, res) {
   try {
@@ -11,7 +19,10 @@ async function updateStore(req, res) {
     if (req.file?.path === undefined) {
       photo_profile = data.photo_profile;
     } else {
-      photo_profile = req.file.path;
+      const { secure_url } = await cloudinary.uploader.upload(req.file.path, {
+        folder: "/lapak/toko",
+      });
+      photo_profile = secure_url;
     }
     await storemodel.update(
       {
@@ -51,11 +62,14 @@ async function detailStore(req, res) {
 async function createStore(req, res) {
   try {
     let body = req.body;
+    const url = await cloudinary.uploader.upload(req.file.path, {
+      folder: "/lapak/toko",
+    });
     const data = await storemodel.create({
       owner: jwtDecode(req.headers.authorization).id,
       nama_toko: body.nama_toko,
       daerah: body.daerah,
-      photo_profile: req.file.path,
+      photo_profile: url.secure_url,
     });
     await usermodel.update(
       { hasStore: true, store_id: data.id },

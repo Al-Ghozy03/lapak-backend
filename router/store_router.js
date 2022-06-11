@@ -3,7 +3,7 @@ const {
   detailStore,
   updateStore,
 } = require("../controller/store_controller");
-const { upload } = require("../middleware/upload_store");
+const { upload } = require("../middleware/upload");
 
 const router = require("express")();
 
