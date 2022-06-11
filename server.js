@@ -5,11 +5,10 @@ const { router } = require("./router/router");
 const app = express();
 const http = createServer(app);
 const io = new Server(http);
-const dotenv = require("dotenv").config();
+require("dotenv").config();
 const cors = require("cors");
 const { sendNotif } = require("./controller/checkout_controller");
 const { seeMessage } = require("./controller/chat_controller");
-
 app.use(cors());
 app.use(express.json());
 app.use(router);
@@ -18,7 +17,7 @@ io.on("connection", (socket) => {
   console.log(socket.id);
 
   socket.on("join_room", (data) => {
-    seeMessage(data)
+    seeMessage(data);
     socket.join(data.room_code);
   });
 
