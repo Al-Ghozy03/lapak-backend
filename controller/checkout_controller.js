@@ -8,7 +8,9 @@ const notifmodel = require("../models").notifications;
 async function getNotif(req, res) {
   try {
     const data = await sequelize.query(
-      `select notif.id as notif_id,notif.from,notif.to,notif.message,notif.is_read,users.name,users.photo_profile,notif.created_at from notifications as notif join users on notif.from = users.id`,
+      `select notif.id as notif_id,notif.from,notif.to,notif.message,notif.is_read,users.name,users.photo_profile,notif.created_at from notifications as notif join users on notif.from = users.id where notif.to = ${
+        jwtDecode(req.headers.authorization).id
+      }`,
       {
         type: QueryTypes.SELECT,
         raw: true,
