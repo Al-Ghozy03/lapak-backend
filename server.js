@@ -7,7 +7,7 @@ const http = createServer(app);
 const io = new Server(http);
 require("dotenv").config();
 const cors = require("cors");
-const { sendNotif } = require("./controller/checkout_controller");
+// const { sendNotif } = require("./controller/checkout_controller");
 const { seeMessage } = require("./controller/chat_controller");
 app.use(cors());
 app.use(express.json());
@@ -27,7 +27,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("send_notif", (data) => {
-    sendNotif(data);
+    // sendNotif(data);
     socket.emit("received_notif", data);
   });
 

@@ -21,8 +21,14 @@ async function getNotif(req, res) {
   }
 }
 
-async function sendNotif(data) {
-  await notifmodel.create(data);
+async function sendNotif(req, res) {
+  try {
+    const data = await notifmodel.create(req.body);
+    return res.json({ message: "berhasil", data });
+  } catch (er) {
+    console.log(er);
+    return res.status(442).json({ er });
+  }
 }
 
 async function barangSampai(req, res) {
