@@ -37,7 +37,7 @@ module.exports = {
       alamat:{
         type:Sequelize.STRING
       },
-      isPaid: {
+      is_paid: {
         type: Sequelize.BOOLEAN,
         defaultValue: false,
       },

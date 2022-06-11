@@ -31,7 +31,7 @@ async function barangSampai(req, res) {
   try {
     const data = await ordermodel.findOne({ where: { id: req.params.id } });
     if (!data) return res.status(404).json({ message: "data tidak ditemukan" });
-    await ordermodel.update({ isPaid: true }, { where: { id: req.params.id } });
+    await ordermodel.update({ is_paid: true }, { where: { id: req.params.id } });
     return res.status(200).json({ message: "berhasil" });
   } catch (er) {
     console.log(er);
@@ -42,7 +42,7 @@ async function barangSampai(req, res) {
 async function getOrder(req, res) {
   try {
     const data = await sequelize.query(
-      `select orders.id,orders.user_id,orders.barang_id,barangs.store_id,stores.daerah,orders.total_barang,orders.total_harga,orders.alamat,orders.isPaid,barangs.nama_barang,barangs.harga,barangs.deskripsi,barangs.kategori,barangs.diskon,barangs.foto_barang,stores.owner,stores.nama_toko,stores.photo_profile as foto_toko from orders join users on users.id = orders.user_id join barangs on orders.barang_id = barangs.id join stores on stores.id = barangs.store_id where users.id = ${
+      `select orders.id,orders.user_id,orders.barang_id,barangs.store_id,stores.daerah,orders.total_barang,orders.total_harga,orders.alamat,orders.is_paid,barangs.nama_barang,barangs.harga,barangs.deskripsi,barangs.kategori,barangs.diskon,barangs.foto_barang,stores.owner,stores.nama_toko,stores.photo_profile as foto_toko from orders join users on users.id = orders.user_id join barangs on orders.barang_id = barangs.id join stores on stores.id = barangs.store_id where users.id = ${
         jwtDecode(req.headers.authorization).id
       }`,
       {
