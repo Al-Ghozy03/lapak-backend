@@ -31,7 +31,7 @@ module.exports = {
           as: "to",
         },
       },
-      isRead: {
+      is_read: {
         type: Sequelize.BOOLEAN,
         defaultValue: false,
       },

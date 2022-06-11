@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     from: DataTypes.INTEGER,
     message: DataTypes.STRING,
     to: DataTypes.INTEGER,
-    isRead:DataTypes.BOOLEAN
+    is_read:DataTypes.BOOLEAN
   }, {
     sequelize,
     modelName: 'notifications',
