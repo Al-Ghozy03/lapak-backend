@@ -43,7 +43,7 @@ async function getOrder(req, res) {
     const data = await sequelize.query(
       `select orders.id,orders.user_id,orders.barang_id,barangs.store_id,stores.daerah,orders.total_barang,orders.total_harga,orders.alamat,orders.isPaid,barangs.nama_barang,barangs.harga,barangs.deskripsi,barangs.kategori,barangs.diskon,barangs.foto_barang,stores.owner,stores.nama_toko,stores.photo_profile as foto_toko from orders join users on users.id = orders.user_id join barangs on orders.barang_id = barangs.id join stores on stores.id = barangs.store_id where users.id = ${
         jwtDecode(req.headers.authorization).id
-      } and orders.isPaid = 0`,
+      }`,
       {
         type: QueryTypes.SELECT,
         raw: true,
