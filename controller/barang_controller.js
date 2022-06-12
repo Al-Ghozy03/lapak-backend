@@ -77,7 +77,7 @@ async function testing(req, res) {
   try {
     let { orderBy, item } = req.query;
     const data = await sequelize.query(
-      `select * from barangs where nama_barang = "macbook"`,
+      `select * from stores where nama_toko = "macbook"`,
       {
         type: QueryTypes.SELECT,
         raw: true,
