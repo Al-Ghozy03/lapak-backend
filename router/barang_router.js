@@ -8,6 +8,7 @@ const {
   getRandom,
   deleteBarang,
   getBarangDiskon,
+  testing,
 } = require("../controller/barang_controller");
 const { upload } = require("../middleware/upload");
 
@@ -22,4 +23,5 @@ router.get("/kategori", getBarangByKategori);
 router.get("/rekomendasi", getRandom);
 router.delete("/delete/:id", deleteBarang);
 router.get("/diskon-30", getBarangDiskon);
+router.get("/testing",testing)
 module.exports = { barangRouter: router };
