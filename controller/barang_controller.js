@@ -106,7 +106,7 @@ async function searchBarang(req, res) {
     //   ],
     // });
     const data = await sequelize.query(
-      `SELECT "barangs"."id", "barangs"."store_id", "barangs"."nama_barang", "barangs"."harga", "barangs"."deskripsi", "barangs"."kategori", "barangs"."diskon", "barangs"."foto_barang", "toko"."id" AS "toko.id", "toko"."owner" AS "toko.owner", "toko"."nama_toko" AS "toko.nama_toko", "toko"."daerah" AS "toko.daerah", "toko"."photo_profile" AS "toko.foto_toko" FROM "barangs" AS "barangs" LEFT OUTER JOIN "stores" AS "toko" ON "barangs"."id" = "toko"."store_id" WHERE "barangs"."nama_barang" LIKE '%${item}%' ORDER BY "barangs"."harga" ${orderBy};\``,
+      `SELECT "barangs"."id", "barangs"."store_id", "barangs"."nama_barang", "barangs"."harga", "barangs"."deskripsi", "barangs"."kategori", "barangs"."diskon", "barangs"."foto_barang", "toko"."id" AS "toko.id", "toko"."owner" AS "toko.owner", "toko"."nama_toko" AS "toko.nama_toko", "toko"."daerah" AS "toko.daerah", "toko"."photo_profile" AS "toko.foto_toko" FROM "barangs" AS "barangs" LEFT OUTER JOIN "stores" AS "toko" ON "barangs"."store_id" = "toko"."id" WHERE "barangs"."nama_barang" LIKE '%${item}%' ORDER BY "barangs"."harga" ${orderBy};\``,
       {
         type: QueryTypes.SELECT,
         raw: true,
