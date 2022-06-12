@@ -94,7 +94,7 @@ async function searchBarang(req, res) {
         {
           model: storemodel,
           require: true,
-          as: "coba",
+          as: "toko",
           attributes: [
             "id",
             "owner",
