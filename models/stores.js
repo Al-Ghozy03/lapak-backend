@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
 
       stores.belongsTo(models.barangs, {
         as: "toko",
-        foreignKey: "store_id",
+        foreignKey: "id",
 
       });
     }
