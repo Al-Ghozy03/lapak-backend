@@ -105,13 +105,6 @@ async function searchBarang(req, res) {
     //     },
     //   ],
     // });
-    const data = await sequelize.query(
-      `SELECT * FROM barangs JOIN stores ON barangs.store_id = stores.id WHERE barangs.nama_barang LIKE "%a%"`,
-      {
-        type: QueryTypes.SELECT,
-        raw: true,
-      }
-    );
     res.json({ data });
   } catch (er) {
     console.log(er);

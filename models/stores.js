@@ -1,15 +1,11 @@
-"use strict"; 
+"use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class stores extends Model {
     static associate(models) {
       stores.hasMany(models.barangs, { as: "barang", foreignKey: "id" });
 
-      stores.belongsTo(models.barangs, {
-        as: "toko",
-        foreignKey: "store_id",
-
-      });
+      stores.belongsTo(models.barangs);
     }
   }
   stores.init(
