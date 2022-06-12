@@ -8,12 +8,12 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "store_id",
         through: "",
       });
-      barangs.hasOne(models.stores,{as:"toko",foreignKey:"store_id"})
+      barangs.hasOne(models.stores, { as: "toko", foreignKey: "store_id" });
 
       barangs.belongsToMany(models.orders, {
         as: "order_barang",
         foreignKey: "barang_id",
-        through:""
+        through: "",
       });
     }
   }
