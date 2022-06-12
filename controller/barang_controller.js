@@ -2,6 +2,7 @@ const { Op } = require("sequelize");
 const { sequelize } = require("../models");
 const { QueryTypes } = require("sequelize");
 const barangmodel = require("../models").barangs;
+const storemodel = require("../models").stores;
 const cloudinary = require("cloudinary").v2;
 require("dotenv").config();
 
@@ -73,32 +74,44 @@ async function getBarangByKategori(req, res) {
   }
 }
 
-async function testing(req, res) {
-  try {
-    let { orderBy, item } = req.query;
-    const data = await sequelize.query(
-      `select * from stores`,
-      {
-        type: QueryTypes.SELECT,
-        raw: true,
-      }
-    );
-    res.json({ data });
-  } catch (er) {
-    console.log(er);
-    return res.status(442).json({ er });
-  }
-}
 async function searchBarang(req, res) {
   try {
     let { orderBy, item } = req.query;
-    const data = await sequelize.query(
-      `select barangs.id,barangs.store_id,stores.owner,stores.nama_toko,stores.daerah,stores.photo_profile as foto_toko,barangs.nama_barang,barangs.harga,barangs.deskripsi,barangs.kategori,barangs.foto_barang from stores left join barangs on stores.id = barangs.store_id where barangs.nama_barang like "%${item}%" order by barangs.harga ${orderBy}`,
-      {
-        type: QueryTypes.SELECT,
-        raw: true,
-      }
-    );
+    const data = await barangmodel.findAll({
+      where: { nama_barang: { [Op.substring]: item } },
+      attributes: [
+        "id",
+        "store_id",
+        "nama_barang",
+        "harga",
+        "deskripsi",
+        "kategori",
+        "diskon",
+        "foto_barang",
+      ],
+      order: [["harga", orderBy]],
+      include: [
+        {
+          model: storemodel,
+          require: true,
+          as: "coba",
+          attributes: [
+            "id",
+            "owner",
+            "nama_toko",
+            "daerah",
+            ["photo_profile", "foto_toko"],
+          ],
+        },
+      ],
+    });
+    // const data = await sequelize.query(
+    //   `select barangs.id,barangs.store_id,stores.owner,stores.nama_toko,stores.daerah,stores.photo_profile as foto_toko,barangs.nama_barang,barangs.harga,barangs.deskripsi,barangs.kategori,barangs.foto_barang from stores left join barangs on stores.id = barangs.store_id where barangs.nama_barang like "%${item}%" order by barangs.harga ${orderBy}`,
+    //   {
+    //     type: QueryTypes.SELECT,
+    //     raw: true,
+    //   }
+    // );
     res.json({ data });
   } catch (er) {
     console.log(er);
@@ -175,5 +188,4 @@ module.exports = {
   getRandom,
   deleteBarang,
   getBarangDiskon,
-  testing
 };

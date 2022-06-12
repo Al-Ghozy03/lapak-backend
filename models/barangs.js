@@ -5,9 +5,10 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       barangs.belongsToMany(models.stores, {
         as: "barang",
-        foreignKey: "id",
+        foreignKey: "store_id",
         through: "",
       });
+      barangs.hasMany(models.stores,{as:"coba",foreignKey:"id"})
       barangs.belongsToMany(models.orders, {
         as: "order_barang",
         foreignKey: "barang_id",
