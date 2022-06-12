@@ -24,7 +24,13 @@ async function getNotif(req, res) {
 }
 
 async function sendNotif(data) {
-  await notifmodel.create(data);
+  console.log(data);
+  await notifmodel.create({
+    from:data.from,
+    message:data.message,
+    to:data.to,
+    created_at:Date(Date.now())
+  });
 }
 
 async function barangSampai(req, res) {
@@ -47,7 +53,7 @@ async function getOrder(req, res) {
     const data = await sequelize.query(
       `select orders.id,orders.user_id,orders.barang_id,barangs.store_id,stores.daerah,orders.total_barang,orders.total_harga,orders.alamat,orders.is_paid,barangs.nama_barang,barangs.harga,barangs.deskripsi,barangs.kategori,barangs.diskon,barangs.foto_barang,stores.owner,stores.nama_toko,stores.photo_profile as foto_toko from orders join users on users.id = orders.user_id join barangs on orders.barang_id = barangs.id join stores on stores.id = barangs.store_id where users.id = ${
         jwtDecode(req.headers.authorization).id
-      }`,
+      } and orders.is_paid = 0`,
       {
         type: QueryTypes.SELECT,
         raw: true,
