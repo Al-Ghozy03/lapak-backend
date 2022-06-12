@@ -9,12 +9,6 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       stores.hasMany(models.barangs, { as: "barang", foreignKey: "store_id" });
-
-      stores.belongsToMany(models.barangs, {
-        as: "toko",
-        foreignKey: "id",
-        through: "",
-      });
     }
   }
   stores.init(
