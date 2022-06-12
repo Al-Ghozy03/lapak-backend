@@ -85,24 +85,24 @@ async function searchBarang(req, res) {
         "daerah",
         ["photo_profile", "foto_toko"],
       ],
-     
+
       include: [
         {
           model: barangmodel,
           require: true,
           as: "barang",
-          where: { nama_barang: { [Op.substring]: item } },
-          attributes: [
-            "id",
-            "store_id",
-            "nama_barang",
-            "harga",
-            "deskripsi",
-            "kategori",
-            "diskon",
-            "foto_barang",
-          ],
-          order: [["harga", orderBy]],
+          // where: { nama_barang: { [Op.substring]: item } },
+          // attributes: [
+          //   "id",
+          //   "store_id",
+          //   "nama_barang",
+          //   "harga",
+          //   "deskripsi",
+          //   "kategori",
+          //   "diskon",
+          //   "foto_barang",
+          // ],
+          // order: [["harga", orderBy]],
         },
       ],
     });
