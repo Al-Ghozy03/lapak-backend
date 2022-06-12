@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "store_id",
         through: "",
       });
-      barangs.hasMany(models.stores,{as:"coba",foreignKey:"id"})
+      barangs.hasMany(models.stores,{as:"toko",foreignKey:"id"})
       barangs.belongsToMany(models.orders, {
         as: "order_barang",
         foreignKey: "barang_id",
