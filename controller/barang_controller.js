@@ -77,34 +77,34 @@ async function getBarangByKategori(req, res) {
 async function searchBarang(req, res) {
   try {
     let { orderBy, item } = req.query;
-    // const data = await barangmodel.findAll({
-    //   where: { nama_barang: { [Op.substring]: item } },
-    //   attributes: [
-    //     "id",
-    //     "store_id",
-    //     "nama_barang",
-    //     "harga",
-    //     "deskripsi",
-    //     "kategori",
-    //     "diskon",
-    //     "foto_barang",
-    //   ],
-    //   order: [["harga", orderBy]],
-    //   include: [
-    //     {
-    //       model: storemodel,
-    //       require: true,
-    //       as: "toko",
-    //       attributes: [
-    //         "id",
-    //         "owner",
-    //         "nama_toko",
-    //         "daerah",
-    //         ["photo_profile", "foto_toko"],
-    //       ],
-    //     },
-    //   ],
-    // });
+    const data = await barangmodel.findAll({
+      where: { nama_barang: { [Op.substring]: item } },
+      attributes: [
+        "id",
+        "store_id",
+        "nama_barang",
+        "harga",
+        "deskripsi",
+        "kategori",
+        "diskon",
+        "foto_barang",
+      ],
+      order: [["harga", orderBy]],
+      include: [
+        {
+          model: storemodel,
+          require: true,
+          as: "toko",
+          attributes: [
+            "id",
+            "owner",
+            "nama_toko",
+            "daerah",
+            ["photo_profile", "foto_toko"],
+          ],
+        },
+      ],
+    });
     res.json({ data });
   } catch (er) {
     console.log(er);
