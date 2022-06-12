@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
 
       stores.belongsToMany(models.barangs, {
         as: "toko",
-        foreignKey: "store_id",
+        foreignKey: "id",
         through: "",
       });
     }
