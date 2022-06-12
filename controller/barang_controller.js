@@ -77,7 +77,7 @@ async function searchBarang(req, res) {
   try {
     let { orderBy, item } = req.query;
     const data = await sequelize.query(
-      `select barangs.id,barangs.store_id,stores.owner,stores.nama_toko,stores.daerah,stores.photo_profile as foto_toko,barangs.nama_barang,barangs.harga,barangs.deskripsi,barangs.kategori,barangs.foto_barang from stores left join barangs on stores.id = barangs.store_id where barangs.nama_barang like "${item}" order by barangs.harga ${orderBy}`,
+      `select barangs.id,barangs.store_id,stores.owner,stores.nama_toko,stores.daerah,stores.photo_profile as foto_toko,barangs.nama_barang,barangs.harga,barangs.deskripsi,barangs.kategori,barangs.foto_barang from stores left join barangs on stores.id = barangs.store_id where barangs.nama_barang = "${item}" order by barangs.harga ${orderBy}`,
       {
         type: QueryTypes.SELECT,
         raw: true,
