@@ -41,6 +41,7 @@ async function updateStore(req, res) {
 
 async function detailStore(req, res) {
   try {
+    const { orderBy } = req.query;
     const data = await storemodel.findOne({
       where: { id: req.params.id },
       include: [
@@ -48,6 +49,9 @@ async function detailStore(req, res) {
           model: barangmodel,
           require: true,
           as: "barang",
+          ...(orderBy != undefined && {
+            order: ["harga", orderBy],
+          }),
         },
       ],
     });
