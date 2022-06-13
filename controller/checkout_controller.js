@@ -93,14 +93,6 @@ async function getOrder(req, res) {
                 user_id: jwtDecode(req.headers.authorization).id,
                 is_paid: false,
               },
-              include: [
-                {
-                  model: usermodel,
-                  require: true,
-                  as: "order_user",
-                  attributes: ["id", "name", "email", "photo_profile"],
-                },
-              ],
             },
           ],
         },
