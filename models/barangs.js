@@ -12,10 +12,10 @@ module.exports = (sequelize, DataTypes) => {
         as: "item",
         foreignKey: "id",
       });
-      barangs.belongsToMany(models.orders, {
+
+      barangs.hasOne(models.orders, {
         as: "order_barang",
         foreignKey: "barang_id",
-        through: "",
       });
     }
   }
