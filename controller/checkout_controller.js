@@ -64,7 +64,6 @@ async function getOrder(req, res) {
       include: [
         {
           model: barangmodel,
-          require: true,
           as: "item",
           attributes: [
             "id",
@@ -80,7 +79,6 @@ async function getOrder(req, res) {
             {
               model: ordermodel,
               as: "order_barang",
-              require: true,
               attributes: [
                 "id",
                 "user_id",
