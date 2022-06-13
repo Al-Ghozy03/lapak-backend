@@ -60,13 +60,34 @@ async function getRandom(req, res) {
 async function getBarangByKategori(req, res) {
   try {
     let { orderBy, cat } = req.query;
-    const data = await sequelize.query(
-      `select barangs.id,barangs.store_id,stores.owner,stores.nama_toko,stores.daerah,stores.photo_profile as foto_toko,barangs.nama_barang,barangs.harga,barangs.deskripsi,barangs.kategori,barangs.foto_barang from stores left join barangs on stores.id = barangs.store_id where barangs.kategori = "${cat}" order by barangs.harga ${orderBy}`,
-      {
-        type: QueryTypes.SELECT,
-        raw: true,
-      }
-    );
+    const data = await storemodel.findAll({
+      attributes: [
+        "id",
+        "owner",
+        "nama_toko",
+        "daerah",
+        ["photo_profile", "foto_toko"],
+      ],
+      include: [
+        {
+          model: barangmodel,
+          as: "item",
+          require: true,
+          attributes: [
+            "id",
+            "store_id",
+            "nama_barang",
+            "harga",
+            "deskripsi",
+            "kategori",
+            "diskon",
+            "foto_barang",
+          ],
+          where: { kategori: cat },
+          order: [["harga", orderBy]],
+        },
+      ],
+    });
     res.json({ data });
   } catch (er) {
     console.log(er);
