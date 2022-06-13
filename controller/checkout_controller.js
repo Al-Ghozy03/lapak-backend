@@ -65,6 +65,7 @@ async function getOrder(req, res) {
         {
           model: barangmodel,
           as: "item",
+          right: true,
           attributes: [
             "id",
             "store_id",
