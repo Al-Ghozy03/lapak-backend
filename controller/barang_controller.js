@@ -90,7 +90,7 @@ async function searchBarang(req, res) {
         {
           model: barangmodel,
           require: true,
-          as: "barang",
+          as: "item",
           where: { nama_barang: { [Op.substring]: item } },
           attributes: [
             "id",

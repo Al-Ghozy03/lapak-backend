@@ -4,6 +4,7 @@ module.exports = (sequelize, DataTypes) => {
   class stores extends Model {
     static associate(models) {
       stores.hasMany(models.barangs, { as: "barang", foreignKey: "store_id" });
+      stores.hasOne(models.barangs, { as: "item", foreignKey: "store_id" });
     }
   }
   stores.init(

@@ -8,6 +8,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "id",
         through: "",
       });
+      barangs.belongsTo(models.stores, {
+        as: "item",
+        foreignKey: "id",
+      });
       barangs.belongsToMany(models.orders, {
         as: "order_barang",
         foreignKey: "barang_id",
