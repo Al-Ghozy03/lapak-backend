@@ -8,6 +8,15 @@ const notifmodel = require("../models").notifications;
 const barangmodel = require("../models").barangs;
 const storemodel = require("../models").stores;
 
+async function counterNotif() {
+  try {
+    const data = await notifmodel.findAll({ where: { to: req.params.id } });
+    return res.json({ length: data.length });
+  } catch (er) {
+    console.log(er);
+    return res.status(442).json({ er });
+  }
+}
 async function seeNotif(data) {
   await notifmodel.update({ is_read: true }, { where: { to: data } });
 }
@@ -143,4 +152,5 @@ module.exports = {
   sendNotif,
   getNotif,
   seeNotif,
+  counterNotif
 };
