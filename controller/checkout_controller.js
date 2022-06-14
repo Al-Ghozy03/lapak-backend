@@ -8,6 +8,10 @@ const notifmodel = require("../models").notifications;
 const barangmodel = require("../models").barangs;
 const storemodel = require("../models").stores;
 
+async function seeNotif(data) {
+  await notifmodel.update({ is_read: true }, { where: { to: data } });
+}
+
 async function getNotif(req, res) {
   try {
     const data = await sequelize.query(
@@ -132,4 +136,11 @@ async function pesan(req, res) {
     return res.status(442).json({ er });
   }
 }
-module.exports = { pesan, getOrder, barangSampai, sendNotif, getNotif };
+module.exports = {
+  pesan,
+  getOrder,
+  barangSampai,
+  sendNotif,
+  getNotif,
+  seeNotif,
+};
