@@ -8,9 +8,11 @@ const notifmodel = require("../models").notifications;
 const barangmodel = require("../models").barangs;
 const storemodel = require("../models").stores;
 
-async function counterNotif(req,res) {
+async function counterNotif(req, res) {
   try {
-    const data = await notifmodel.findAll({ where: { to: req.params.id } });
+    const data = await notifmodel.findAll({
+      where: { to: req.params.id, is_read: false },
+    });
     return res.json({ length: data.length });
   } catch (er) {
     console.log(er);
@@ -152,5 +154,5 @@ module.exports = {
   sendNotif,
   getNotif,
   seeNotif,
-  counterNotif
+  counterNotif,
 };
