@@ -8,7 +8,7 @@ const io = new Server(http);
 require("dotenv").config();
 const cors = require("cors");
 const { sendNotif, seeNotif } = require("./controller/checkout_controller");
-const { seeMessage } = require("./controller/chat_controller");
+const { seeMessage, sendMessage } = require("./controller/chat_controller");
 app.use(cors());
 app.use(express.json());
 app.use(router);
@@ -25,6 +25,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("send_message", (data) => {
+    sendMessage(data);
     socket.emit("received_message", data);
     socket.to(data.room_code).emit("received_message", data);
   });

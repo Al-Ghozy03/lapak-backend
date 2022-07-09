@@ -6,6 +6,8 @@ const chatmodel = require("../models").room_chats;
 const messagemodel = require("../models").messages;
 const listchatmodel = require("../models").list_chats;
 
+async function sendMessage(data) {}
+
 async function seeMessage(data) {
   console.log(data.from);
   await messagemodel.update(
@@ -38,27 +40,6 @@ async function messageList(req, res) {
       where: { room_code: req.params.room },
     });
     return res.json({ data: data });
-  } catch (er) {
-    console.log(er);
-    return res.status(442).json({ er });
-  }
-}
-
-async function sendMessage(req, res) {
-  try {
-    let body = req.body;
-    const value = await listchatmodel.findOne({
-      where: { room_code: body.room_code, user_id: body.to },
-    });
-    if (!value) {
-      await listchatmodel.create({
-        receiver: body.from,
-        room_code: body.room_code,
-        user_id: body.to,
-      });
-    }
-    const data = await messagemodel.create(body);
-    return res.status(200).json({ data });
   } catch (er) {
     console.log(er);
     return res.status(442).json({ er });
@@ -124,8 +105,8 @@ async function generateCode(req, res) {
 
 module.exports = {
   generateCode,
-  sendMessage,
   messageList,
   listChat,
   seeMessage,
+  sendMessage,
 };
