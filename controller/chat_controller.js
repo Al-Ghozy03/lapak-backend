@@ -6,7 +6,15 @@ const chatmodel = require("../models").room_chats;
 const messagemodel = require("../models").messages;
 const listchatmodel = require("../models").list_chats;
 
-async function sendMessage(data) {}
+async function sendMessage(data) {
+  await messagemodel.create({
+    from:data.from,
+    to:data.to,
+    message:data.message,
+    room_code:data.room_code,
+    isRead:data.is_read
+  })
+}
 
 async function seeMessage(data) {
   console.log(data.from);
