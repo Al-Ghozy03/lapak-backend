@@ -22,6 +22,7 @@ io.on("connection", (socket) => {
   });
   socket.on("see_notif", (data) => {
     seeNotif(data);
+    socket.join(data)
   });
 
   socket.on("send_message", (data) => {
@@ -32,7 +33,7 @@ io.on("connection", (socket) => {
 
   socket.on("send_notif", (data) => {
     sendNotif(data);
-    socket.emit("received_notif", data);
+    socket.to(data.to).emit("received_notif", data);
   });
 
   socket.on("received_message", (data) => {
