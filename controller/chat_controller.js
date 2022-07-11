@@ -30,7 +30,7 @@ async function listChat(req, res) {
     const data = await sequelize.query(
       `select list.id as id_list,list.receiver,list.room_code,users.name,users.photo_profile,messages.message,messages.from from list_chats as list join users on list.receiver = users.id join messages on messages.room_code = list.room_code where list.user_id = ${
         jwtDecode(req.headers.authorization).id
-      } ORDER BY messages.created_at asc LIMIT 1 `,
+      } ORDER BY messages.createdAt asc LIMIT 1 `,
       {
         type: QueryTypes.SELECT,
         raw: true,
