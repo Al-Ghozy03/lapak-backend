@@ -13,6 +13,11 @@ module.exports = (sequelize, DataTypes) => {
         as: "order_user",
         foreignKey: "user_id",
       });
+
+      users.hasOne(models.list_chats, {
+        as: "receiver_message",
+        foreignKey: "receiver",
+      });
     }
   }
   users.init(

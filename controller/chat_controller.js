@@ -5,15 +5,16 @@ const { sequelize } = require("../models");
 const chatmodel = require("../models").room_chats;
 const messagemodel = require("../models").messages;
 const listchatmodel = require("../models").list_chats;
+const usermodel = require("../models").users;
 
 async function sendMessage(data) {
   await messagemodel.create({
-    from:data.from,
-    to:data.to,
-    message:data.message,
-    room_code:data.room_code,
-    isRead:data.is_read
-  })
+    from: data.from,
+    to: data.to,
+    message: data.message,
+    room_code: data.room_code,
+    isRead: data.is_read,
+  });
 }
 
 async function seeMessage(data) {
@@ -27,9 +28,9 @@ async function seeMessage(data) {
 async function listChat(req, res) {
   try {
     const data = await sequelize.query(
-      `select list.id as id_list,list.receiver,list.room_code,users.name,users.photo_profile from list_chats as list join users on list.receiver = users.id where list.user_id = ${
+      `select list.id as id_list,list.receiver,list.room_code,users.name,users.photo_profile,messages.message,messages.from from list_chats as list join users on list.receiver = users.id join messages on messages.room_code = list.room_code where list.user_id = ${
         jwtDecode(req.headers.authorization).id
-      }`,
+      } ORDER BY messages.createdAt asc LIMIT 1 `,
       {
         type: QueryTypes.SELECT,
         raw: true,
