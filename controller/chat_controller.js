@@ -28,9 +28,9 @@ async function seeMessage(data) {
 async function listChat(req, res) {
   try {
     const data = await sequelize.query(
-      `select list.id as id_list,list.receiver,list.room_code,users.name,users.photo_profile,messages.message,messages.from from list_chats as list join users on list.receiver = users.id join messages on messages.room_code = list.room_code where list.user_id = ${
+      `select list.id as id_list,list.receiver,list.room_code,users.name,users.photo_profile from list_chats as list join users on list.receiver = users.id where list.user_id = ${
         jwtDecode(req.headers.authorization).id
-      } and messages.id = (select max(id) from messages)`,
+      }`,
       {
         type: QueryTypes.SELECT,
         raw: true,
