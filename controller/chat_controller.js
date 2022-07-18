@@ -9,14 +9,14 @@ const usermodel = require("../models").users;
 
 async function sendMessage(data) {
   const check = await listchatmodel.findOne({
-    where: { room_code: data.room_code, receiver: data.to, user_id: data.from },
+    where: { room_code: data.room_code, receiver: data.from, user_id: data.to },
   });
-  console.log(`ini check`, check);
+  console.log(check);
   if (!check) {
     await listchatmodel.create({
       room_code: data.room_code,
-      receiver: data.to,
-      receiver: data.receiver,
+      receiver: data.from,
+      user_id: data.to,
     });
   }
   await messagemodel.create({
