@@ -74,6 +74,8 @@ async function generateCode(req, res) {
     });
 
     let roomCode = crypto.randomBytes(10).toString("hex");
+
+    // ---------------------------------------------------------------------------------
     if (!code) {
       await chatmodel.create({ from: from, to: to, room_code: roomCode });
       await listchatmodel.create({
@@ -90,13 +92,15 @@ async function generateCode(req, res) {
         },
       });
     }
+    // ------------------------------------------------------------------------------
+
     const data = await listchatmodel.findOne({
       where: {
         room_code: code.room_code,
-        user_id: to,
+        user_id: from,
+        receiver: to,
       },
     });
-
     if (!data) {
       await listchatmodel.create({
         receiver: to,
@@ -104,7 +108,6 @@ async function generateCode(req, res) {
         user_id: jwtDecode(req.headers.authorization).id,
       });
     }
-
     res.json({ message: "berhasil", code });
   } catch (er) {
     console.log(er);
