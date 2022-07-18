@@ -8,6 +8,16 @@ const listchatmodel = require("../models").list_chats;
 const usermodel = require("../models").users;
 
 async function sendMessage(data) {
+  const check = await listchatmodel.findOne({
+    where: { room_code: data.room_code, receiver: data.to, user_id: data.from },
+  });
+  if (!check) {
+    await listchatmodel.create({
+      room_code: data.room_code,
+      receiver: data.to,
+      receiver: data.receiver,
+    });
+  }
   await messagemodel.create({
     from: data.from,
     to: data.to,
