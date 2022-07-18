@@ -11,6 +11,7 @@ async function sendMessage(data) {
   const check = await listchatmodel.findOne({
     where: { room_code: data.room_code, receiver: data.to, user_id: data.from },
   });
+  console.log(`ini check`, check);
   if (!check) {
     await listchatmodel.create({
       room_code: data.room_code,
