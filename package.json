@@ -8,7 +8,7 @@
     "start": "node server.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Muhammad Faiz Al Ghozi",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.0.1",
